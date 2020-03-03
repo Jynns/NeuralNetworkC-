@@ -44,7 +44,6 @@ std::vector<Neuron> & NeuronalesNetz::getOutputLayer()
 
 void NeuronalesNetz::train(std::vector<std::vector<float>>& X, std::vector<std::vector<float>>& y)
 {
-	//TODO Fix y
 	for (int i = 0; i < X.size(); i++) {
 		predict(X[i]);
 		std::vector<float> y_true{ y[i] };
@@ -62,7 +61,7 @@ void NeuronalesNetz::predict(std::vector<float>& X)
 		net.inputLayer[i].setValue(X[i]);
 	}
 	//From input to hidden
-	//WARNING sumInputs increases to infinity
+
 	for (int k = 0; k < net.hiddenLayer.size(); k++) {
 		float sumInputs=0;
 		for (int i = 0; i < net.inputLayer.size();i++) {
@@ -94,7 +93,6 @@ void NeuronalesNetz::backpropagate(std::vector<float>& y_true)
 			net.outputLayer[i].setDerivative(-(y_true[i] - outOut)*outOut*(1 - outOut));
 			float delta = net.outputLayer[i].getDerivative() *outHid;
 			getWeight(c, i, 1) = getWeight(c, i, 1)-lr * delta;
-			//std::cout << getWeight(c, i, 1) << std::endl;
 		}
 	}
 	//Update weight between input hidden
@@ -109,8 +107,6 @@ void NeuronalesNetz::backpropagate(std::vector<float>& y_true)
 			}
 			float delta = outInp *	outHid*(1-outHid)*totalError;
 			getWeight(c, i, 0) = getWeight(c, i, 0) - lr * delta;
-			//std::cout << getWeight(c, i, 0) << std::endl;
 		}
 	}
-	//std::cout << "backpropagate done" << std::endl;
 }
